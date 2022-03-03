@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
@@ -24,6 +25,7 @@ abstract class BaseFragment<T: ViewDataBinding, V: ViewModel>: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
+        dataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
         dataBinding.lifecycleOwner = this
         dataBinding.setVariable( bindingVariable, viewModel )
 
