@@ -6,19 +6,20 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class LocalRepositoryImpl @Inject constructor(private val reminderDao: ReminderDao): LocalRepository {
-    override suspend fun getReminderList(): Flow<List<ReminderEntity>> {
+
+    override fun getReminderList(): Flow<List<ReminderEntity>> {
         return reminderDao.getAll()
     }
 
-    override suspend fun addReminder(reminderEntity: ReminderEntity) {
+    override fun addReminder(reminderEntity: ReminderEntity) {
         reminderDao.insert(reminderEntity)
     }
 
-    override suspend fun updateReminder(reminderEntity: ReminderEntity) {
+    override fun updateReminder(reminderEntity: ReminderEntity) {
         reminderDao.update(reminderEntity)
     }
 
-    override suspend fun switchReminder(reminderEntity: ReminderEntity) {
+    override fun switchReminder(reminderEntity: ReminderEntity) {
         reminderDao.update(reminderEntity)
     }
 

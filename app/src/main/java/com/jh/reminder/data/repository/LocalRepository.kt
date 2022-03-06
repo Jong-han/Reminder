@@ -4,8 +4,8 @@ import com.jh.reminder.data.db.ReminderEntity
 import kotlinx.coroutines.flow.Flow
 
 interface LocalRepository {
-    suspend fun getReminderList() : Flow<List<ReminderEntity>>
-    suspend fun addReminder(reminderEntity: ReminderEntity)
-    suspend fun updateReminder(reminderEntity: ReminderEntity)
-    suspend fun switchReminder(reminderEntity: ReminderEntity)
+    fun getReminderList() : Flow<List<ReminderEntity>>
+    fun addReminder(reminderEntity: ReminderEntity)
+    fun updateReminder(reminderEntity: ReminderEntity)
+    fun switchReminder(reminderEntity: ReminderEntity)
 }
