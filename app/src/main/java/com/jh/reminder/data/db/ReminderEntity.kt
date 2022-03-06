@@ -10,6 +10,6 @@ import kotlinx.parcelize.Parcelize
 data class ReminderEntity(
     val desc: String,
     val time: Long,
-    val isActive: Boolean,
+    var isActive: Boolean,
     @PrimaryKey(autoGenerate = true) val id: Int = 0
 ) : Parcelable
