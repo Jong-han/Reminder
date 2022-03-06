@@ -5,7 +5,9 @@ import com.jh.reminder.BR
 import com.jh.reminder.R
 import com.jh.reminder.base.BaseFragment
 import com.jh.reminder.databinding.FragmentSettingBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SettingFragment: BaseFragment<FragmentSettingBinding, SettingViewModel>() {
 
     override val viewModel: SettingViewModel by viewModels()
