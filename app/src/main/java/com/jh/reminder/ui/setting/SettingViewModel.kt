@@ -36,15 +36,26 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-    fun addOrUpdateReminder(desc: String, hour: Int, minute: Int, isAdd: Boolean) {
+    fun addReminder(desc: String, hour: Int, minute: Int) {
         viewModelScope.launch {
             val time = timeToLong(hour, minute)
             val reminderEntity = ReminderEntity(desc, time, false)
             withContext(ioDispatcher) {
-                if (isAdd)
-                    insertUseCase.addReminder(reminderEntity)
-                else
-                    updateUseCase.updateReminder(reminderEntity)
+                insertUseCase.addReminder(reminderEntity)
+            }
+            _viewEvent.emit(ViewEvent.Complete)
+        }
+    }
+
+    fun updateReminder(desc: String, hour: Int, minute: Int, reminderEntity: ReminderEntity) {
+        viewModelScope.launch {
+            val time = timeToLong(hour, minute)
+            val target = reminderEntity.also {
+                it.desc = desc
+                it.time = time
+            }
+            withContext(ioDispatcher) {
+                updateUseCase.updateReminder(target)
             }
             _viewEvent.emit(ViewEvent.Complete)
         }

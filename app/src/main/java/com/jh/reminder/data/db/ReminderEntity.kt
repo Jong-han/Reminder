@@ -8,8 +8,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Entity(tableName = "Reminder")
 data class ReminderEntity(
-    val desc: String,
-    val time: Long,
+    var desc: String,
+    var time: Long,
     var isActive: Boolean,
     @PrimaryKey(autoGenerate = true) val id: Int = 0
 ) : Parcelable

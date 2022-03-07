@@ -38,7 +38,8 @@ class ListFragment: BaseFragment<FragmentListBinding, ListViewModel>() {
                         findNavController().navigate(R.id.action_listFragment_to_settingFragment)
                     }
                     ListViewModel.ViewEvent.ClickReminder -> {
-                        findNavController().navigate(R.id.action_listFragment_to_settingFragment)
+//                        val action = ListFragmentDirections.actionListFragmentToSettingFragment()
+//                        findNavController().navigate(R.id.action_listFragment_to_settingFragment)
                     }
                     ListViewModel.ViewEvent.ChangeReminderState -> {
                     }
@@ -50,7 +51,8 @@ class ListFragment: BaseFragment<FragmentListBinding, ListViewModel>() {
 
     private val onClickReminder: (Int)->Unit = { position ->
         val item = listAdapter.currentList[position]
-        viewModel.onClickReminder()
+        val action = ListFragmentDirections.actionListFragmentToSettingFragment(item)
+        findNavController().navigate(action)
     }
 
     private val onClickSwitch: (Int)->Unit = { position ->
