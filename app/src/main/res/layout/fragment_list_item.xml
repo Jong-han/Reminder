@@ -9,6 +9,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp"
@@ -51,6 +52,7 @@
             app:layout_constraintBottom_toBottomOf="@id/iv_icon"/>
 
         <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/sw_active"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="@{data.active}"

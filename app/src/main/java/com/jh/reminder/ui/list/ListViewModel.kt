@@ -58,7 +58,9 @@ class ListViewModel @Inject constructor(
     }
 
     fun updateReminder(reminderEntity: ReminderEntity) {
-        updateUseCase.updateReminder(reminderEntity.also { it.isActive = !it.isActive })
+        viewModelScope.launch(ioDispatcher) {
+            updateUseCase.updateReminder(reminderEntity.also { it.isActive = !it.isActive })
+        }
     }
 
 }

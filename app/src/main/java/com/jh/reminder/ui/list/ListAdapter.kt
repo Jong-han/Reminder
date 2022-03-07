@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jh.reminder.data.db.ReminderEntity
 import com.jh.reminder.databinding.FragmentListItemBinding
 
-class ListAdapter: ListAdapter<ReminderEntity,ListViewHolder>(ListDiffUtil()) {
+class ListAdapter(private val onClickReminder: (Int)->Unit, private val onClickSwitch: (Int)->Unit): ListAdapter<ReminderEntity,ListViewHolder>(ListDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = FragmentListItemBinding.inflate(inflater, parent, false)
@@ -16,13 +16,21 @@ class ListAdapter: ListAdapter<ReminderEntity,ListViewHolder>(ListDiffUtil()) {
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.bind(currentList[position])
+        holder.bind(currentList[position], onClickReminder, onClickSwitch)
     }
 }
 
 class ListViewHolder(private val binding: FragmentListItemBinding): RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: ReminderEntity) {
-        binding.data = item
+    fun bind(item: ReminderEntity, onClickReminder: (Int) -> Unit, onClickSwitch: (Int) -> Unit) {
+        binding.run {
+            data = item
+            container.setOnClickListener {
+                onClickReminder.invoke(adapterPosition)
+            }
+            swActive.setOnClickListener {
+                onClickSwitch.invoke(adapterPosition)
+            }
+        }
     }
 }
 

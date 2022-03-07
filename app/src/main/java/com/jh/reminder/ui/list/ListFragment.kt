@@ -19,7 +19,7 @@ class ListFragment: BaseFragment<FragmentListBinding, ListViewModel>() {
 
     override fun getLayoutId(): Int = R.layout.fragment_list
 
-    private val listAdapter by lazy { ListAdapter() }
+    private val listAdapter by lazy { ListAdapter(onClickReminder, onClickSwitch) }
 
     override fun initViewsAndEvents() {
 
@@ -46,5 +46,15 @@ class ListFragment: BaseFragment<FragmentListBinding, ListViewModel>() {
             }
         }
 
+    }
+
+    private val onClickReminder: (Int)->Unit = { position ->
+        val item = listAdapter.currentList[position]
+        viewModel.onClickReminder()
+    }
+
+    private val onClickSwitch: (Int)->Unit = { position ->
+        val item = listAdapter.currentList[position]
+        viewModel.updateReminder(item)
     }
 }
