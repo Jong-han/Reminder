@@ -28,8 +28,6 @@ class ListViewModel @Inject constructor(
     }
 
     sealed class ViewEvent {
-        object ClickReminder: ViewEvent()
-        object ChangeReminderState: ViewEvent()
         object AddReminder: ViewEvent()
     }
 
@@ -38,18 +36,6 @@ class ListViewModel @Inject constructor(
 
     private val _reminderList = MutableStateFlow<List<ReminderEntity>>(emptyList())
     val reminderList: StateFlow<List<ReminderEntity>> = _reminderList
-
-    fun onClickReminder() {
-        viewModelScope.launch {
-            _viewEvent.emit(ViewEvent.ClickReminder)
-        }
-    }
-
-    fun onChangeReminderState() {
-        viewModelScope.launch {
-            _viewEvent.emit(ViewEvent.ChangeReminderState)
-        }
-    }
 
     fun onAddReminder() {
         viewModelScope.launch {

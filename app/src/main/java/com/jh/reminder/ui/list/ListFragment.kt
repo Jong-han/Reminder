@@ -21,6 +21,8 @@ class ListFragment: BaseFragment<FragmentListBinding, ListViewModel>() {
 
     private val listAdapter by lazy { ListAdapter(onClickReminder, onClickSwitch) }
 
+    private var flag = true
+
     override fun initViewsAndEvents() {
 
         dataBinding.rvReminder.adapter = listAdapter
@@ -35,18 +37,14 @@ class ListFragment: BaseFragment<FragmentListBinding, ListViewModel>() {
             viewModel.viewEvent.collect {
                 when (it) {
                     ListViewModel.ViewEvent.AddReminder -> {
-                        findNavController().navigate(R.id.action_listFragment_to_settingFragment)
-                    }
-                    ListViewModel.ViewEvent.ClickReminder -> {
-//                        val action = ListFragmentDirections.actionListFragmentToSettingFragment()
-//                        findNavController().navigate(R.id.action_listFragment_to_settingFragment)
-                    }
-                    ListViewModel.ViewEvent.ChangeReminderState -> {
+                        if (flag) {
+                            findNavController().navigate(R.id.action_listFragment_to_settingFragment)
+                            flag = false
+                        }
                     }
                 }
             }
         }
-
     }
 
     private val onClickReminder: (Int)->Unit = { position ->
@@ -58,5 +56,10 @@ class ListFragment: BaseFragment<FragmentListBinding, ListViewModel>() {
     private val onClickSwitch: (Int)->Unit = { position ->
         val item = listAdapter.currentList[position]
         viewModel.updateReminder(item)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        flag = true
     }
 }

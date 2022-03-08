@@ -46,6 +46,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:hint="Please enter a name"
+            android:textColorHint="@android:color/darker_gray"
             app:layout_constraintTop_toBottomOf="@id/tv_reminder_desc"
             app:layout_constraintStart_toStartOf="@id/tv_reminder_desc"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -67,10 +68,7 @@
             android:layout_height="wrap_content"
             android:timePickerMode="spinner"
             android:background="@color/item_background"
-            android:numbersTextColor="@color/white"
-            android:numbersInnerTextColor="@color/white"
-            android:numbersBackgroundColor="@color/white"
-            android:numbersSelectorColor="@color/white"
+            android:theme="@style/MyBase.TimePicker"
             app:layout_constraintTop_toBottomOf="@id/tv_time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -89,6 +87,60 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_ringtone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="벨소리"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/time_picker"
+            app:layout_constraintStart_toStartOf="@id/time_picker" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_ringtone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@color/item_background"
+            app:layout_constraintTop_toBottomOf="@id/tv_ringtone"
+            app:layout_constraintStart_toStartOf="@id/tv_ringtone"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_lock_silent_mode_off"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_ringtone_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Ringtone"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/iv_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_ringtone_desc"/>
+
+            <TextView
+                android:id="@+id/tv_ringtone_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="asdf"
+                android:textColor="@android:color/holo_blue_light"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tv_ringtone_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_ringtone_title"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

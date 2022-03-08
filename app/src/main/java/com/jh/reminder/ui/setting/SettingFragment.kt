@@ -1,5 +1,8 @@
 package com.jh.reminder.ui.setting
 
+import android.content.Intent
+import android.media.RingtoneManager
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -46,10 +49,20 @@ class SettingFragment: BaseFragment<FragmentSettingBinding, SettingViewModel>() 
                             viewModel.updateReminder(desc, hour, minute, target)
                     }
                     SettingViewModel.ViewEvent.Complete -> {
-                        findNavController().navigate(R.id.action_settingFragment_to_listFragment)
+//                        findNavController().navigate(R.id.action_settingFragment_to_listFragment)
+                        findNavController().popBackStack()
                     }
                 }
             }
+        }
+
+        dataBinding.containerRingtone.setOnClickListener {
+            val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
+//            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
+//            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
+//            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI,
+//                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+            ringtoneResult.launch(intent)
         }
 
     }
@@ -59,4 +72,8 @@ class SettingFragment: BaseFragment<FragmentSettingBinding, SettingViewModel>() 
         calendar.timeInMillis = time
         return calendar
     }
+
+    private val ringtoneResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    }
+
 }
