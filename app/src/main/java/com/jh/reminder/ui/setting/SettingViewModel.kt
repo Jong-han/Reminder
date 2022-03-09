@@ -30,6 +30,8 @@ class SettingViewModel @Inject constructor(
     private val _viewEvent = MutableSharedFlow<ViewEvent>()
     val viewEvent: SharedFlow<ViewEvent> = _viewEvent
 
+    private lateinit var targetReminderEntity: ReminderEntity
+
     fun onCommitResult() {
         viewModelScope.launch {
             _viewEvent.emit(ViewEvent.CommitResult)
@@ -39,10 +41,11 @@ class SettingViewModel @Inject constructor(
     fun addReminder(desc: String, hour: Int, minute: Int) {
         viewModelScope.launch {
             val time = timeToLong(hour, minute)
-            val reminderEntity = ReminderEntity(desc, time, false)
+            val reminderEntity = ReminderEntity(desc, time, true, getNewRequestKey())
             withContext(ioDispatcher) {
                 insertUseCase.addReminder(reminderEntity)
             }
+            targetReminderEntity = reminderEntity
             _viewEvent.emit(ViewEvent.Complete)
         }
     }
@@ -57,9 +60,14 @@ class SettingViewModel @Inject constructor(
             withContext(ioDispatcher) {
                 updateUseCase.updateReminder(target)
             }
+            targetReminderEntity = target
             _viewEvent.emit(ViewEvent.Complete)
         }
     }
+
+    private fun getNewRequestKey(): Int = insertUseCase.getLatestRequestKey()
+
+    fun getTargetReminderEntity(): ReminderEntity = targetReminderEntity
 
     private fun timeToLong(hour: Int, minute: Int): Long {
         val calendar = Calendar.getInstance()

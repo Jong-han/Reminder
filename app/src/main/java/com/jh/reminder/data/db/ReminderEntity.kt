@@ -11,5 +11,6 @@ data class ReminderEntity(
     var desc: String,
     var time: Long,
     var isActive: Boolean,
+    var requestCode: Int,
     @PrimaryKey(autoGenerate = true) val id: Int = 0
 ) : Parcelable

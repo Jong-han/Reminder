@@ -1,15 +1,21 @@
 package com.jh.reminder.ui.setting
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.jh.reminder.AlarmReceiver
 import com.jh.reminder.BR
 import com.jh.reminder.R
 import com.jh.reminder.base.BaseFragment
+import com.jh.reminder.data.db.ReminderEntity
 import com.jh.reminder.databinding.FragmentSettingBinding
+import com.jh.reminder.ext.longToCalendar
 import com.jh.reminder.ext.repeatOnStarted
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -30,7 +36,7 @@ class SettingFragment: BaseFragment<FragmentSettingBinding, SettingViewModel>() 
         val target = args.item
 
         target?.let {
-            val calendar = longToCalendar(it.time)
+            val calendar = it.time.longToCalendar()
             dataBinding.etReminderDesc.setText(it.desc)
             dataBinding.timePicker.hour = calendar.get(Calendar.HOUR_OF_DAY)
             dataBinding.timePicker.minute = calendar.get(Calendar.MINUTE)
@@ -49,7 +55,7 @@ class SettingFragment: BaseFragment<FragmentSettingBinding, SettingViewModel>() 
                             viewModel.updateReminder(desc, hour, minute, target)
                     }
                     SettingViewModel.ViewEvent.Complete -> {
-//                        findNavController().navigate(R.id.action_settingFragment_to_listFragment)
+                        setAlarm(viewModel.getTargetReminderEntity())
                         findNavController().popBackStack()
                     }
                 }
@@ -67,10 +73,35 @@ class SettingFragment: BaseFragment<FragmentSettingBinding, SettingViewModel>() 
 
     }
 
-    private fun longToCalendar(time: Long): Calendar {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = time
-        return calendar
+    private fun setAlarm(target: ReminderEntity) {
+        val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val intent = Intent(requireContext(), AlarmReceiver::class.java)
+        val requestCode = target.requestCode
+        val pendingIntent = PendingIntent.getBroadcast(
+            requireContext(), requestCode, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val refreshCalendar = Calendar.getInstance()
+        refreshCalendar.set(Calendar.HOUR_OF_DAY, dataBinding.timePicker.hour)
+        refreshCalendar.set(Calendar.MINUTE, dataBinding.timePicker.minute)
+        refreshCalendar.set(Calendar.SECOND, 0)
+        refreshCalendar.set(Calendar.MILLISECOND, 0)
+
+        val refreshTriggerTime = if ( refreshCalendar.timeInMillis > System.currentTimeMillis() ) {
+            refreshCalendar.timeInMillis
+        }
+        else {
+            refreshCalendar.timeInMillis + 1000 * 60 * 60 * 24
+        }
+
+        alarmManager.cancel(pendingIntent)
+
+        alarmManager.set(
+            AlarmManager.RTC_WAKEUP,
+            refreshTriggerTime,
+            pendingIntent
+        )
     }
 
     private val ringtoneResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {

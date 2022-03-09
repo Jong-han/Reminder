@@ -3,6 +3,7 @@ package com.jh.reminder.di
 import android.content.Context
 import androidx.room.Room
 import com.jh.reminder.data.db.ReminderDatabase
+import com.jh.reminder.data.preference.AppPreference
 import com.jh.reminder.data.repository.LocalRepository
 import com.jh.reminder.data.repository.LocalRepositoryImpl
 import dagger.Binds
@@ -27,6 +28,10 @@ class LocalProvidesModule {
     @Provides
     @Singleton
     fun providesReminderDAO(reminderDatabase: ReminderDatabase) = reminderDatabase.reminderDao()
+
+    @Provides
+    @Singleton
+    fun providesPreference(@ApplicationContext context: Context): AppPreference = AppPreference(context)
 
 }
 
