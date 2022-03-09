@@ -75,9 +75,7 @@ class ListFragment: BaseFragment<FragmentListBinding, ListViewModel>() {
 
         val intent = Intent(requireContext(), AlarmReceiver::class.java)
         val requestCode = target.requestCode
-        val pendingIntent = PendingIntent.getBroadcast(
-            requireContext(), requestCode, intent,
-            PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getBroadcast(requireContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         alarmManager.cancel(pendingIntent)
     }
@@ -87,9 +85,7 @@ class ListFragment: BaseFragment<FragmentListBinding, ListViewModel>() {
 
         val intent = Intent(requireContext(), AlarmReceiver::class.java)
         val requestCode = target.requestCode
-        val pendingIntent = PendingIntent.getBroadcast(
-            requireContext(), requestCode, intent,
-            PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getBroadcast(requireContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val refreshTriggerTime = if ( target.time > System.currentTimeMillis() ) {
             target.time

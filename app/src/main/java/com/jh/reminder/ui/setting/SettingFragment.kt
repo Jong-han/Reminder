@@ -7,6 +7,7 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -41,6 +42,7 @@ class SettingFragment: BaseFragment<FragmentSettingBinding, SettingViewModel>() 
             dataBinding.etReminderDesc.setText(it.desc)
             dataBinding.timePicker.hour = calendar.get(Calendar.HOUR_OF_DAY)
             dataBinding.timePicker.minute = calendar.get(Calendar.MINUTE)
+            dataBinding.tvRingtoneDesc.text = RingtoneManager.getRingtone(requireContext(), it.ringtone?.toUri()).getTitle(requireContext())
         }
 
         repeatOnStarted {
@@ -76,9 +78,7 @@ class SettingFragment: BaseFragment<FragmentSettingBinding, SettingViewModel>() 
         val intent = Intent(requireContext(), AlarmReceiver::class.java)
         intent.putExtra("asdf",target.requestCode)
         val requestCode = target.requestCode
-        val pendingIntent = PendingIntent.getBroadcast(
-            requireContext(), requestCode, intent,
-            PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getBroadcast(requireContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val refreshCalendar = Calendar.getInstance()
         refreshCalendar.set(Calendar.HOUR_OF_DAY, dataBinding.timePicker.hour)
