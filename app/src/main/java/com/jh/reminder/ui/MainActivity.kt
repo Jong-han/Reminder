@@ -11,6 +11,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        const val EXTRA_REQUEST_KEY = "EXTRA_REQUEST_KEY"
+    }
+
     private lateinit var dataBinding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     private fun showActiveFragment(newIntent: Intent? = null) {
 
         val intent = newIntent ?: intent
-        val requestCode = intent?.getIntExtra("asdf", -1)
+        val requestCode = intent?.getIntExtra(EXTRA_REQUEST_KEY, -1)
         val listFragment = supportFragmentManager.fragments[0].childFragmentManager.fragments[0] as ListFragment
         if (requestCode != -1) {
             listFragment.navigateActiveFragment(requestCode ?: -1)

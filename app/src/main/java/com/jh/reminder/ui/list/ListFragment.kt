@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.jh.reminder.AlarmReceiver
+import com.jh.reminder.receiver.AlarmReceiver
 import com.jh.reminder.BR
 import com.jh.reminder.R
 import com.jh.reminder.base.BaseFragment

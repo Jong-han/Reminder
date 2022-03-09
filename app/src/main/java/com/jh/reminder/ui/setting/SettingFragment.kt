@@ -11,7 +11,6 @@ import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.jh.reminder.AlarmReceiver
 import com.jh.reminder.BR
 import com.jh.reminder.R
 import com.jh.reminder.base.BaseFragment
@@ -19,6 +18,8 @@ import com.jh.reminder.data.db.ReminderEntity
 import com.jh.reminder.databinding.FragmentSettingBinding
 import com.jh.reminder.ext.longToCalendar
 import com.jh.reminder.ext.repeatOnStarted
+import com.jh.reminder.receiver.AlarmReceiver
+import com.jh.reminder.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import java.util.*
@@ -76,7 +77,7 @@ class SettingFragment: BaseFragment<FragmentSettingBinding, SettingViewModel>() 
         val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val intent = Intent(requireContext(), AlarmReceiver::class.java)
-        intent.putExtra("asdf",target.requestCode)
+        intent.putExtra(MainActivity.EXTRA_REQUEST_KEY,target.requestCode)
         val requestCode = target.requestCode
         val pendingIntent = PendingIntent.getBroadcast(requireContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
