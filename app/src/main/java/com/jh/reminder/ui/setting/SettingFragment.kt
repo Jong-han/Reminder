@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -77,6 +78,8 @@ class SettingFragment: BaseFragment<FragmentSettingBinding, SettingViewModel>() 
         val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val intent = Intent(requireContext(), AlarmReceiver::class.java)
+        intent.putExtra("asdf",target.requestCode)
+        Log.i("asdf","target :: $target")
         val requestCode = target.requestCode
         val pendingIntent = PendingIntent.getBroadcast(
             requireContext(), requestCode, intent,

@@ -8,4 +8,5 @@ interface LocalRepository {
     fun addReminder(reminderEntity: ReminderEntity)
     fun updateReminder(reminderEntity: ReminderEntity)
     fun switchReminder(reminderEntity: ReminderEntity)
+    fun getReminderByRequestCode(requestCode: Int): ReminderEntity
 }

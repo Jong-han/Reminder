@@ -13,3 +13,11 @@ fun TextView.setTime(time: Long) {
     val date = Date(time)
     text = sdf.format(date)
 }
+
+@SuppressLint("SimpleDateFormat")
+@BindingAdapter("activeTime")
+fun TextView.setActiveTime(time: Long) {
+    val sdf = SimpleDateFormat("HH:mm")
+    val date = Date(time)
+    text = sdf.format(date)
+}

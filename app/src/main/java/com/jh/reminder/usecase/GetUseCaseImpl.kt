@@ -9,4 +9,8 @@ class GetUseCaseImpl @Inject constructor(private val localRepository: LocalRepos
     override fun getReminderList(): Flow<List<ReminderEntity>> {
         return localRepository.getReminderList()
     }
+
+    override fun getReminderByRequestCode(requestCode: Int): ReminderEntity {
+        return localRepository.getReminderByRequestCode(requestCode)
+    }
 }

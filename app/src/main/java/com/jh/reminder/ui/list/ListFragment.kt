@@ -104,8 +104,9 @@ class ListFragment: BaseFragment<FragmentListBinding, ListViewModel>() {
         )
     }
 
-    fun navigateActiveFragment() {
-        findNavController().navigate(R.id.action_listFragment_to_activeFragment)
+    fun navigateActiveFragment(requestCode: Int) {
+        val action = ListFragmentDirections.actionListFragmentToActiveFragment(requestCode)
+        findNavController().navigate(action)
     }
 
     override fun onResume() {

@@ -28,5 +28,10 @@
     <fragment
         android:id="@+id/activeFragment"
         android:name="com.jh.reminder.ui.active.ActiveFragment"
-        android:label="ActiveFragment" />
+        android:label="ActiveFragment" >
+        <argument
+            android:name="requestCode"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
 </navigation>

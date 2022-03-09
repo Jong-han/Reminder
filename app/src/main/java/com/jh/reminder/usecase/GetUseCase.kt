@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface GetUseCase {
     fun getReminderList(): Flow<List<ReminderEntity>>
+    fun getReminderByRequestCode(requestCode: Int): ReminderEntity
 }

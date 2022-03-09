@@ -23,4 +23,8 @@ class LocalRepositoryImpl @Inject constructor(private val reminderDao: ReminderD
         reminderDao.update(reminderEntity)
     }
 
+    override fun getReminderByRequestCode(requestCode: Int): ReminderEntity {
+        return reminderDao.getReminderByRequestCode(requestCode)
+    }
+
 }
