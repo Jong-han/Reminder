@@ -1,10 +1,16 @@
 package com.jh.reminder.ui.list
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.jh.reminder.AlarmReceiver
 import com.jh.reminder.BR
 import com.jh.reminder.R
 import com.jh.reminder.base.BaseFragment
+import com.jh.reminder.data.db.ReminderEntity
 import com.jh.reminder.databinding.FragmentListBinding
 import com.jh.reminder.ext.repeatOnStarted
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +48,12 @@ class ListFragment: BaseFragment<FragmentListBinding, ListViewModel>() {
                             flag = false
                         }
                     }
+                    is ListViewModel.ViewEvent.Complete -> {
+                        if (it.isActive)
+                            setAlarm(it.reminderEntity)
+                        else
+                            cancelAlarm(it.reminderEntity)
+                    }
                 }
             }
         }
@@ -61,5 +73,39 @@ class ListFragment: BaseFragment<FragmentListBinding, ListViewModel>() {
     override fun onResume() {
         super.onResume()
         flag = true
+    }
+
+    private fun cancelAlarm(target: ReminderEntity) {
+        val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val intent = Intent(requireContext(), AlarmReceiver::class.java)
+        val requestCode = target.requestCode
+        val pendingIntent = PendingIntent.getBroadcast(
+            requireContext(), requestCode, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+
+        alarmManager.cancel(pendingIntent)
+    }
+
+    private fun setAlarm(target: ReminderEntity) {
+        val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val intent = Intent(requireContext(), AlarmReceiver::class.java)
+        val requestCode = target.requestCode
+        val pendingIntent = PendingIntent.getBroadcast(
+            requireContext(), requestCode, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val refreshTriggerTime = if ( target.time > System.currentTimeMillis() ) {
+            target.time
+        }
+        else {
+            target.time + 1000 * 60 * 60 * 24
+        }
+        alarmManager.set(
+            AlarmManager.RTC_WAKEUP,
+            refreshTriggerTime,
+            pendingIntent
+        )
     }
 }

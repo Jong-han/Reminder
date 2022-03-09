@@ -29,6 +29,7 @@ class ListViewModel @Inject constructor(
 
     sealed class ViewEvent {
         object AddReminder: ViewEvent()
+        class Complete(val reminderEntity: ReminderEntity, val isActive: Boolean): ViewEvent()
     }
 
     private val _viewEvent = MutableSharedFlow<ViewEvent>()
@@ -46,6 +47,7 @@ class ListViewModel @Inject constructor(
     fun updateReminder(reminderEntity: ReminderEntity) {
         viewModelScope.launch(ioDispatcher) {
             updateUseCase.updateReminder(reminderEntity.also { it.isActive = !it.isActive })
+            _viewEvent.emit(ViewEvent.Complete(reminderEntity, reminderEntity.isActive))
         }
     }
 
