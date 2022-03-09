@@ -1,5 +1,6 @@
 package com.jh.reminder.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.jh.reminder.databinding.ActivityMainBinding
@@ -20,11 +21,22 @@ class MainActivity : AppCompatActivity() {
         showActiveFragment()
 
     }
-    private fun showActiveFragment() {
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        showActiveFragment(intent)
+
+    }
+
+    private fun showActiveFragment(newIntent: Intent? = null) {
+
+        val intent = newIntent ?: intent
         val requestCode = intent?.getIntExtra("asdf", -1)
         val listFragment = supportFragmentManager.fragments[0].childFragmentManager.fragments[0] as ListFragment
         if (requestCode != -1) {
             listFragment.navigateActiveFragment(requestCode ?: -1)
         }
+
     }
 }

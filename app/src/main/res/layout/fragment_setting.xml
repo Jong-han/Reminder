@@ -134,7 +134,7 @@
                 android:id="@+id/tv_ringtone_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="asdf"
+                android:text="무음"
                 android:textColor="@android:color/holo_blue_light"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tv_ringtone_title"

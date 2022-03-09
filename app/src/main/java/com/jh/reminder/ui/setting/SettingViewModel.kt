@@ -1,5 +1,6 @@
 package com.jh.reminder.ui.setting
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jh.reminder.data.db.ReminderEntity
@@ -32,6 +33,8 @@ class SettingViewModel @Inject constructor(
 
     private lateinit var targetReminderEntity: ReminderEntity
 
+    private var uri: Uri? = null
+
     fun onCommitResult() {
         viewModelScope.launch {
             _viewEvent.emit(ViewEvent.CommitResult)
@@ -41,7 +44,7 @@ class SettingViewModel @Inject constructor(
     fun addReminder(desc: String, hour: Int, minute: Int) {
         viewModelScope.launch {
             val time = timeToLong(hour, minute)
-            val reminderEntity = ReminderEntity(desc, time, true, getNewRequestKey())
+            val reminderEntity = ReminderEntity(desc, time, true, getNewRequestKey(), uri.toString())
             withContext(ioDispatcher) {
                 insertUseCase.addReminder(reminderEntity)
             }
@@ -56,6 +59,7 @@ class SettingViewModel @Inject constructor(
             val target = reminderEntity.also {
                 it.desc = desc
                 it.time = time
+                it.ringtone = uri.toString()
             }
             withContext(ioDispatcher) {
                 updateUseCase.updateReminder(target)
@@ -68,6 +72,10 @@ class SettingViewModel @Inject constructor(
     private fun getNewRequestKey(): Int = insertUseCase.getLatestRequestKey()
 
     fun getTargetReminderEntity(): ReminderEntity = targetReminderEntity
+
+    fun setRingtoneUri(ringtone: Uri?) {
+        uri = ringtone
+    }
 
     private fun timeToLong(hour: Int, minute: Int): Long {
         val calendar = Calendar.getInstance()

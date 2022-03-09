@@ -5,7 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
-import android.util.Log
+import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -65,10 +65,6 @@ class SettingFragment: BaseFragment<FragmentSettingBinding, SettingViewModel>() 
 
         dataBinding.containerRingtone.setOnClickListener {
             val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
-//            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
-//            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
-//            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI,
-//                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             ringtoneResult.launch(intent)
         }
 
@@ -79,7 +75,6 @@ class SettingFragment: BaseFragment<FragmentSettingBinding, SettingViewModel>() 
 
         val intent = Intent(requireContext(), AlarmReceiver::class.java)
         intent.putExtra("asdf",target.requestCode)
-        Log.i("asdf","target :: $target")
         val requestCode = target.requestCode
         val pendingIntent = PendingIntent.getBroadcast(
             requireContext(), requestCode, intent,
@@ -108,6 +103,10 @@ class SettingFragment: BaseFragment<FragmentSettingBinding, SettingViewModel>() 
     }
 
     private val ringtoneResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        val uri = it.data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
+        viewModel.setRingtoneUri(uri)
+        val ringtone = RingtoneManager.getRingtone(requireContext(), uri)
+        dataBinding.tvRingtoneDesc.text = ringtone.getTitle(requireContext())
     }
 
 }
