@@ -70,11 +70,6 @@ class ListFragment: BaseFragment<FragmentListBinding, ListViewModel>() {
         viewModel.updateReminder(item)
     }
 
-    override fun onResume() {
-        super.onResume()
-        flag = true
-    }
-
     private fun cancelAlarm(target: ReminderEntity) {
         val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
@@ -108,4 +103,14 @@ class ListFragment: BaseFragment<FragmentListBinding, ListViewModel>() {
             pendingIntent
         )
     }
+
+    fun navigateActiveFragment() {
+        findNavController().navigate(R.id.action_listFragment_to_activeFragment)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        flag = true
+    }
+
 }
