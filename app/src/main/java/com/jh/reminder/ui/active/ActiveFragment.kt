@@ -5,7 +5,9 @@ import com.jh.reminder.BR
 import com.jh.reminder.R
 import com.jh.reminder.base.BaseFragment
 import com.jh.reminder.databinding.FragmentActiveBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ActiveFragment: BaseFragment<FragmentActiveBinding, ActiveViewModel>() {
 
     override val viewModel: ActiveViewModel by viewModels()
